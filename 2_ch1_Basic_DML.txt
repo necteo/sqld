@@ -92,11 +92,44 @@ WHERE 절
         NOT
         AND
         OR
-산술 연산자 : NUMBER와 DATE 자료형에 적용할 수 있는 연산자
-    => 예) SELECT PLAYER_NAME, ((HEIGHT-100) * 0.9 - WEIGHT) AS "적정 체중" FROM PLAYER WHERE ((HEIGHT-100) * 0.9 -WEIGHT) > 0;
-    => NULL 값에 산술 연산을 적용하면 모두 NULL 값이 조회
-비교 연산자 : SQL에서 데이터를 비교하기 위해 사용 => 모든 자료형(숫자, 날짜, 문자열 등)에 적용 가능
-    = 문자열 데이터의 경우 사전 순
-    = NULL 값의 처리
-        => NULL 값은 비교 연산자로 평가할 수 없음 => IS NULL / IS NOT NULL과 같은 별도의 연산자 사용
-        => 예) SELECT * FROM PLAYER WHERE NATION IS NULL;
+    산술 연산자 : NUMBER와 DATE 자료형에 적용할 수 있는 연산자
+        => 예) SELECT PLAYER_NAME, ((HEIGHT-100) * 0.9 - WEIGHT) AS "적정 체중" FROM PLAYER WHERE ((HEIGHT-100) * 0.9 -WEIGHT) > 0;
+        => NULL 값에 산술 연산을 적용하면 모두 NULL 값이 조회
+    비교 연산자 : SQL에서 데이터를 비교하기 위해 사용 => 모든 자료형(숫자, 날짜, 문자열 등)에 적용 가능
+        = 문자열 데이터의 경우 사전 순
+        = NULL 값의 처리
+            => NULL 값은 비교 연산자로 평가할 수 없음 => IS NULL / IS NOT NULL과 같은 별도의 연산자 사용
+            => 예) SELECT * FROM PLAYER WHERE NATION IS NULL;
+    논리 연산자 : NOT > AND > OR
+    SQL 연산자
+        1. 합성(연결) 연산자
+            = CONCAT 함수 => CONCAT(str1, str2) => str1, str2 문자열 연결 => SELECT PLAYER_NAME, CONCAT(HEIGHT, 'Cm') AS "선수 신장" FROM PLAYER;
+            = || 연산자 => str1 || str2 => str1과 str2를 바로 연결 => SELECT PLALYER_NAME, HEIGHT || 'Cm' AS "선수 신장" FROM PLAYER;
+                => 여러 개의 문자열 연속적으로 연결 가능
+            => 예) SELECT PLAYER_NAME || ' 선수: ' || HEIGHT || 'Cm' AS "선수 신장" FROM PLAYER;
+        2. BETWEEN 연산자 => SELECT PLAYER_NAME 선수이름, POTISION 포지션, HEIGHT 키 FROM PLAYER WHERE HEIGHT (NOT) BETWEEN 170 AND 180;
+        3. IN 연산자 => SELECT PLAYER_NAME, TEAM_ID FROM PLAYER WHERE TEAM_ID IN ('K04', 'K06);
+        => 예) SELECT PLAYER_NAME 선수이름, TEAM_ID, POSITION FROM PLAYER WHERE (TEAM_ID, POSITION) IN (('K04', 'GK'), ('K06', 'MF'));
+               SELECT PLAYER_NAME 선수이름, TEAM_ID, POSITION FROM PLAYER WHERE (TEAM_ID, POSITION) NOT IN (('K04', 'GK'), ('K06', 'MF'));
+               SELECT PLAYER_NAME 선수이름, TEAM_ID, POSITION FROM PLAYER WHERE TEAM_ID IS NULL OR POSITION IS NULL;
+        4. LIKE 연산자 => % : 임의의 문자 N개, _ : 임의의 문자 1개
+            => 예) SELECT PLAYER_NAME FROM PLAYER WHERE PLAYER_NAME LIKE '김%' ('김_'); 
+    출력 개수 지정(ROWNUM)
+        => 특정 순서에 따라 레코드에 고유 번호를 부여하는 Pseudo Column => 1부터 시작
+        => 시스템이 자동 관리
+        => 채번 및 출력 개수를 지정할 때 사용
+        => 예) SELECT PLAYER_NAME, ROWNUM FROM PLAYER; (ROWNUM은 존재하지 않지만 명시적으로 지정하여 사용 가능)
+        => 한 행만 => SELECT PLAYER_NAME FROM PLAYER WHERE ROWNUM = 1;
+        => 여러 행 => SELECT PLAYER_NAME FROM PLAYER WHERE ROWNUM < 4;
+
+===========================================================================================================================================================================================================
+
+레코드 삽입(INSERT), 삭제(DELETE), 갱신(UPDATE)
+    레코드 삽입(INSERT)
+        => 테이블에 새로운 데이터를 추가할 때 사용
+        => 특정 칼럼 / 전체 칼럼의 값을 지정하여 입력
+        => INSERT ALL => 한번에 여러 데이터 입력
+        => 유의사항 : 문자 또는 날짜 값은 '' 사용 / 숫자 데이터는 그냥 사용
+        => 예) INSERT INTO PLAYER (PLAYER_ID, PLAYER_NAME, TEAM_ID, BIRTH_DATE) VALUES ('2999001', '손흥민', 'K07', '1999-01-01'); => 정의되지 않은 칼럼은 NULL 입력
+        => 예) INSERT INTO PLAYER VALUES ('2999002', '이강인', 'K07', '', '', '2010', 'MF', '10', NULL, NULL, NULL, NULL, NULL);
+        => 예) INSERT ALL INTO STADIUM(STADIUM_ID, STADIUM_NAME) VALUES ('TP1', '임시경기장1') INTO STADIUM(STADIUM_ID, STADIUM_NAME) VALUES ('TP2', '임시경기장2') SELECT * FROM DUAL;
