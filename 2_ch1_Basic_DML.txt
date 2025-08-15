@@ -133,3 +133,11 @@ WHERE 절
         => 예) INSERT INTO PLAYER (PLAYER_ID, PLAYER_NAME, TEAM_ID, BIRTH_DATE) VALUES ('2999001', '손흥민', 'K07', '1999-01-01'); => 정의되지 않은 칼럼은 NULL 입력
         => 예) INSERT INTO PLAYER VALUES ('2999002', '이강인', 'K07', '', '', '2010', 'MF', '10', NULL, NULL, NULL, NULL, NULL);
         => 예) INSERT ALL INTO STADIUM(STADIUM_ID, STADIUM_NAME) VALUES ('TP1', '임시경기장1') INTO STADIUM(STADIUM_ID, STADIUM_NAME) VALUES ('TP2', '임시경기장2') SELECT * FROM DUAL;
+    레코드 삭제(DELETE)
+        => 테이블에 존재하는 데이터를 삭제할 때 사용
+        => DELETE 테이블명; / DELETE FROM 테이블명;
+        => 예) DELETE FROM STADIUM WHERE STADIUM_ID = 'TP1';
+    레코드 갱신(UPDATE)
+        => 테이블에 존재하는 데이터를 수정할 때 사용
+        => UPDATE 테이블명 SET 칼럼명 = 새로운 값;
+        => 예) UPDATE STADIUM SET STADIUM_NAME = '우리경기장' WHERE STADIUM_ID = 'TP2';
